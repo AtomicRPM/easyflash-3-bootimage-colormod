@@ -3,6 +3,9 @@
 This is a fork of easyflash3-bootimage that has been color modded.
 The original version can be found at https://github.com/easyflash-mirror/easyflash3-bootimage .
 
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EF3main.jpg?raw=true)
+
+
 ## Introduction
 
 This is EasyProg, a Commodore 64/128 tool to write data to the EasyFlash and
