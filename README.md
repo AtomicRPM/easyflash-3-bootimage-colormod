@@ -16,7 +16,7 @@ The original version can be found at https://github.com/easyflash-mirror/easyfla
 ## Introduction
 
 This is EasyProg, a Commodore 64/128 tool to write data to the EasyFlash and
-EasyFlash 3 cartridges.        Cancel changes
+EasyFlash 3 cartridges. 
 
 
 ## Website, Repository and Issue Tracker
