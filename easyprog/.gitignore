@@ -1,0 +1,6 @@
+obj/
+*.lib
+*.map
+/easyprog
+/easyprog.prg
+

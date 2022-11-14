@@ -1,0 +1,6 @@
+[submodule "libef3usb"]
+	path = libef3usb
+	url = ../libef3usb/
+[submodule "eapi"]
+	path = eapi
+	url = ../eapi
