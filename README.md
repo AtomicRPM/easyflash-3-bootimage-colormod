@@ -5,6 +5,13 @@ The original version can be found at https://github.com/easyflash-mirror/easyfla
 
 ![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EF3main.jpg?raw=true)
 
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EF3about.jpg?raw=true)
+
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EF3flash.jpg?raw=true)
+
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EF3name.jpg?raw=true)
+
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EF3success.jpg?raw=true)
 
 ## Introduction
 
