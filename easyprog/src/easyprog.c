@@ -611,7 +611,9 @@ void execUSBCmd(const char* pStrUSBCmd)
         /*if (screenPrintDialog(apStrFlashFromUSB, BUTTON_ENTER | BUTTON_STOP) ==
                 BUTTON_ENTER)*/
         {
-            checkWriteCRTImageFromUSB();
+//            checkWriteCRTImageFromUSB();
+//echto
+            checkIncommingImageFromUSB();            
             refreshMainScreen();
         }
         /*else

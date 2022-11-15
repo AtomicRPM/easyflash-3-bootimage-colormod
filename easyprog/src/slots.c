@@ -97,19 +97,19 @@ void slotsFillEFDir(void)
 uint8_t __fastcall__ selectSlotDialog(void)
 {
 	SelectBoxEntry entries[FLASH_MAX_SLOTS + 1];
-    SelectBoxEntry* pEntry;
-    uint8_t    nSlot, rv;
+   SelectBoxEntry* pEntry;
+  uint8_t    nSlot, rv;
 
     slotsFillEFDir();
-    // termination for strings with strlen() == EF_DIR_ENTRY_SIZE
-    // and termination for list
+   // termination for strings with strlen() == EF_DIR_ENTRY_SIZE
+   // and termination for list
     memset(entries, 0, (FLASH_MAX_SLOTS + 1) * sizeof(SelectBoxEntry));
 
     for (nSlot = 0; nSlot < g_nSlots; ++nSlot)
     {
         pEntry = entries + nSlot;
         // take care: target must be at least as large as source
-        memcpy(pEntry->label, m_EFDir.slots[nSlot],
+       memcpy(pEntry->label, m_EFDir.slots[nSlot],
                sizeof(m_EFDir.slots[0]));
         // empty slots get a '-' because the menu needs a string
         if (pEntry->label[0] == 0)
@@ -119,6 +119,29 @@ uint8_t __fastcall__ selectSlotDialog(void)
     rv = selectBox(entries, "a slot");
     return rv;
 }
+
+/******************************************************************************/
+/**
+ * Let the user select a slot type. Return the slot type.
+ * Return 0xff if the user canceled the selection.
+ */
+//uint8_t __fastcall__ selectSlotTypeDialog(void)
+//{
+//    const SelectBoxEntry aEntries[4] =
+//    {
+//            { "EasyFlash", "", 0 },   // EF_SLOTS
+//            { "KERNAL", "", 0 },      // KERNAL_SLOTS
+//            { "Freezer", "", 0 },     // FREEZER_SLOTS
+//            { "", "", 0 }
+//    };
+//    uint8_t rv;
+//
+//    rv = selectBox(aEntries, "slot type");
+//    return rv;
+//}
+
+
+
 
 
 /******************************************************************************/
@@ -175,6 +198,30 @@ uint8_t selectARSlotDialog(void)
     rv = selectBox(aEntries, "an AR/RR/NP slot");
     return rv;
 }
+
+/******************************************************************************/
+/**
+ * Let the user select a slot type. Return the slot type.
+ * Return 0xff if the user canceled the selection.
+ */
+uint8_t selectSlotTypeDialog(void)
+{
+   const SelectBoxEntry aEntries[3] =
+    {
+            { "EasyFlash", 0 },   // EF_SLOTS
+            { "KERNAL", 0 },      // KERNAL_SLOTS
+//            { "Freezer", 0 },     // FREEZER_SLOTS
+            { "", 0 }
+
+    };
+    uint8_t rv;
+
+    rv = selectBox(aEntries, "flash type");
+    return rv;
+
+}
+
+
 
 
 /******************************************************************************/

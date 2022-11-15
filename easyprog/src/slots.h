@@ -10,9 +10,14 @@
 #define EF_DIR_BANK         0x10
 #define EF_DIR_ENTRY_SIZE   16
 
+#define EF_SLOTS            0
+#define KERNAL_SLOTS        1
+#define FREEZER_SLOTS       2
+
 void slotsFillEFDir(void);
 uint8_t __fastcall__ selectSlotDialog(void);
 uint8_t selectKERNALSlotDialog(void);
+uint8_t __fastcall__ selectSlotTypeDialog(void);
 uint8_t selectARSlotDialog(void);
 uint8_t __fastcall__ checkAskForSlot(void);
 void __fastcall__ slotSelect(uint8_t slot);

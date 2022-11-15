@@ -54,6 +54,7 @@
 uint8_t autoWriteCRTImage(uint8_t nSlot);
 void checkWriteCRTImage(void);
 void checkWriteCRTImageFromUSB(void);
+void checkIncommingImageFromUSB(void);
 void checkWriteLOROMImage(void);
 void checkWriteHIROMImage(void);
 void checkWriteKERNALImage(void);

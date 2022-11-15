@@ -7,6 +7,8 @@ The original version can be found at https://github.com/easyflash-mirror/easyfla
 
 ![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EPabout.jpg?raw=true)
 
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EPselecttype.jpg?raw=true)
+
 ![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EPflash.jpg?raw=true)
 
 ![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EPname.jpg?raw=true)

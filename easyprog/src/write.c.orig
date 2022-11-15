@@ -60,7 +60,6 @@ static uint8_t  m_nBank;
 static uint16_t m_nAddress;
 static uint16_t m_nSize;
 static BankHeader bankHeader;
-static uint8_t m_bFileUSB;
 
 /******************************************************************************/
 /**
@@ -458,62 +457,6 @@ void checkWriteCRTImageFromUSB(void)
             screenPrintSimpleDialog(apStrWriteComplete);
         }
     }
-
-}
-
-/******************************************************************************/
-/**
- * todo: merge functions!
- */
-void checkWriteBINImageFromUSB(void)
-{
-    uint8_t nKERNAL, rv;
-
-    slotSelect(0);
-    nKERNAL = selectKERNALSlotDialog();
-    if (nKERNAL != 0xff)
-    {
-        if (writeOpenFile("U") == CART_RV_OK)
-        {
-	    rv = writeBinImage(nKERNAL | FLASH_8K_SECTOR_BIT, 0,
-                                 EP_NON_INTERLEAVED);
-            if (rv == CART_RV_OK)
-            {
-                slotSaveName(screenReadInput("KERNAL Name", g_strFileName),
-                    nKERNAL);
-            screenPrintSimpleDialog(apStrWriteComplete);
-            }
-        }
-
-    }  
-}
-
-/******************************************************************************/
-/**
- * Check incoming USB image to flash.
- */
-
-
-void checkIncommingImageFromUSB(void)
-{
-   uint8_t nType;
-
-    nType = selectSlotTypeDialog();
-    if (nType == 0xff)
-        return;
-
-    m_bFileUSB = 1;
-
-    if (nType == EF_SLOTS)
-    {
-        checkWriteCRTImageFromUSB();
-    }
-    else if (nType == KERNAL_SLOTS)
-    {
-        checkWriteBINImageFromUSB();
-    }
-
-    m_bFileUSB = 0;
 }
 
 
