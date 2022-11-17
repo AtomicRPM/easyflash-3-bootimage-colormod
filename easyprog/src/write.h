@@ -58,12 +58,14 @@ void checkIncommingImageFromUSB(void);
 void checkWriteLOROMImage(void);
 void checkWriteHIROMImage(void);
 void checkWriteKERNALImage(void);
-void checkWriteARImage(void);
+void checkWriteFreezerImage(void);
+void checkWriteARSImage(void);
 void checkWriteSS5Image(void);
 void eraseAll(void);
 void checkEraseAll(void);
 void checkEraseSlot(void);
 void checkEraseKERNAL(void);
+void checkEraseFreezer(void);
 void checkEraseAR(void);
 void checkEraseSS5(void);
 

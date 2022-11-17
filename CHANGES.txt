@@ -1,5 +1,9 @@
+Version 'atomic' - 16-11-2022
+- CPLD core 1.2.1 or higher required
+- FC3 support added
+
 Version 1.2.0-colormod - 13.11.2022
-- Changed color scheme. 
+- Changed color scheme
 
 Version 1.2.0 - 06.02.2013
 - Menu can be controlled with joystick in port 2

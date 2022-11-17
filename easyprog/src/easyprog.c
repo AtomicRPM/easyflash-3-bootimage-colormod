@@ -110,14 +110,8 @@ ScreenMenu menuMain =
             0
         },
         {
-            "Write A&R/RR/NP to flash",
-            checkWriteARImage,
-            isEF3,
-            0
-        },
-        {
-            "Write SS&5 to flash",
-            checkWriteSS5Image,
+            "Write &Freezer to flash",
+            checkWriteFreezerImage,
             isEF3,
             0
         },
@@ -140,14 +134,8 @@ ScreenMenu menuMain =
             0
         },
         {
-            "Erase AR/RR/NP",
-            checkEraseAR,
-            isEF3,
-            0
-        },
-        {
-            "Erase SS5",
-            checkEraseSS5,
+            "Erase Freezer",
+            checkEraseFreezer,
             isEF3,
             0
         },
@@ -611,8 +599,6 @@ void execUSBCmd(const char* pStrUSBCmd)
         /*if (screenPrintDialog(apStrFlashFromUSB, BUTTON_ENTER | BUTTON_STOP) ==
                 BUTTON_ENTER)*/
         {
-//            checkWriteCRTImageFromUSB();
-//echto
             checkIncommingImageFromUSB();            
             refreshMainScreen();
         }

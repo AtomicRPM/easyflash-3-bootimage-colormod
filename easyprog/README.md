@@ -1,6 +1,6 @@
 # EasyProg
 
-This is a fork of easyflash3-bootimage that has been color modded. The original version can be found at https://github.com/easyflash-mirror/easyflash3-bootimage .
+This is a fork of easyflash3-bootimage that has been color modded. The original version can be found at https://github.com/easyflash-mirror/easyflash3-bootimage .  FC3 capabilities derived from https://github.com/adrianglz64/easyflash3-fc3 .
 
 ## Introduction
 

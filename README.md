@@ -1,19 +1,20 @@
 # EasyFlash 3 BootImage Color mod
 
 This is a fork of easyflash3-bootimage that has been color modded.
-The original version can be found at https://github.com/easyflash-mirror/easyflash3-bootimage .
+The original version can be found at https://github.com/easyflash-mirror/easyflash3-bootimage . FC3 capabilities derived from https://github.com/adrianglz64/easyflash3-fc3 .
 
-![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EF3main.jpg?raw=true)
 
-![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EPabout.jpg?raw=true)
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/screenshots/EF3main.jpg?raw=true)
 
-![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EPselecttype.jpg?raw=true)
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/screenshots/EPabout.jpg?raw=true)
 
-![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EPflash.jpg?raw=true)
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/screenshots/EPselecttype.jpg?raw=true)
 
-![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EPname.jpg?raw=true)
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/screenshots/EPflash.jpg?raw=true)
 
-![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/EPsuccess.jpg?raw=true)
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/screenshots/EPname.jpg?raw=true)
+
+![alt text](https://github.com/AtomicRPM/easyflash3-bootimage-colormod/blob/main/screenshots/EPsuccess.jpg?raw=true)
 
 ## Introduction
 

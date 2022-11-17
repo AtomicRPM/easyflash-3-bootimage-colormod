@@ -27,6 +27,7 @@
 #define EF_DIR_BANK         0x10
 #define EF_DIR_NUM_SLOTS    16
 #define EF_DIR_NUM_KERNALS  8
+#define EF_DIR_NUM_FREEZERS 4
 #define EF_DIR_SLOT         0
 #define EF_DIR_BANK         0x10
 
@@ -49,6 +50,7 @@ typedef struct efmenu_dir_s
     char        signature[16];
     char        slots[EF_DIR_NUM_SLOTS][16];
     char        kernals[EF_DIR_NUM_KERNALS][16];
+    char        freezers[EF_DIR_NUM_FREEZERS][16];
     uint16_t    checksum;
 } efmenu_dir_t;
 

@@ -46,12 +46,14 @@ uint8_t g_nSlots;
 static efmenu_dir_t m_EFDir;
 
 static const char* m_pEFSignature = "EF-Directory V1:";
+static const char* m_pEFSignature2 = "EF-Directory V2:";
 
 /******************************************************************************/
 /**
  * Read the directory from EasyFlash to m_EFDir. If there is no valid
  * directory in the cartridge, initialize the structure with defaults.
  */
+
 void slotsFillEFDir(void)
 {
     uint8_t i, nSlot;
@@ -64,23 +66,38 @@ void slotsFillEFDir(void)
 
     efCopyCartROM(&m_EFDir, (void*)(0x8000), sizeof(m_EFDir));
     if (memcmp(m_EFDir.signature,
-               m_pEFSignature, sizeof(m_EFDir.signature)) != 0)
+               m_pEFSignature2, sizeof(m_EFDir.signature)) != 0)
     {
         // initialize new directory
+        strcpy(utilStr, "Replay Slot 1");
+        strcpy(m_EFDir.freezers[0], utilStr);
+        strcpy(utilStr, "Replay Slot 2");
+        strcpy(m_EFDir.freezers[1], utilStr);
+        strcpy(utilStr, "SS5 Slot");
+        strcpy(m_EFDir.freezers[2], utilStr);
+        strcpy(utilStr, "FC3 Slot");
+        strcpy(m_EFDir.freezers[3], utilStr);
+
+        if (memcmp(m_EFDir.signature,
+                   m_pEFSignature, sizeof(m_EFDir.signature)) != 0)
+        {
+            for (i = 1; i < EF_DIR_NUM_SLOTS; ++i)
+            {
+                strcpy(utilStr, "EF Slot ");
+                utilAppendDecimal(i);
+                strcpy(m_EFDir.slots[i], utilStr);
+            }
+            for (i = 0; i < EF_DIR_NUM_KERNALS; ++i)
+            {
+                strcpy(utilStr, "KERNAL ");
+                utilAppendDecimal(i + 1);
+                strcpy(m_EFDir.kernals[i], utilStr);
+            }
+        }
+
         memcpy(m_EFDir.signature,
-                m_pEFSignature, sizeof(m_EFDir.signature));
-        for (i = 1; i < EF_DIR_NUM_SLOTS; ++i)
-        {
-            strcpy(utilStr, "Slot ");
-            utilAppendDecimal(i);
-            strcpy(m_EFDir.slots[i], utilStr);
-        }
-        for (i = 0; i < EF_DIR_NUM_KERNALS; ++i)
-        {
-            strcpy(utilStr, "KERNAL ");
-            utilAppendDecimal(i + 1);
-            strcpy(m_EFDir.kernals[i], utilStr);
-        }
+                m_pEFSignature2, sizeof(m_EFDir.signature));
+        m_EFDir.checksum = 0x4711;
     }
 
     // slot 0 always gets this name
@@ -119,31 +136,6 @@ uint8_t __fastcall__ selectSlotDialog(void)
     rv = selectBox(entries, "a slot");
     return rv;
 }
-
-/******************************************************************************/
-/**
- * Let the user select a slot type. Return the slot type.
- * Return 0xff if the user canceled the selection.
- */
-//uint8_t __fastcall__ selectSlotTypeDialog(void)
-//{
-//    const SelectBoxEntry aEntries[4] =
-//    {
-//            { "EasyFlash", "", 0 },   // EF_SLOTS
-//            { "KERNAL", "", 0 },      // KERNAL_SLOTS
-//            { "Freezer", "", 0 },     // FREEZER_SLOTS
-//            { "", "", 0 }
-//    };
-//    uint8_t rv;
-//
-//    rv = selectBox(aEntries, "slot type");
-//    return rv;
-//}
-
-
-
-
-
 /******************************************************************************/
 /**
  * Let the user select a KERNAL slot. Return the slot number.
@@ -185,17 +177,19 @@ uint8_t selectKERNALSlotDialog(void)
  * Let the user select a KERNAL slot. Return the slot number.
  * Return 0xff if the user canceled the selection.
  */
-uint8_t selectARSlotDialog(void)
+uint8_t selectFreezerSlotDialog(void)
 {
-    const SelectBoxEntry aEntries[3] =
+    const SelectBoxEntry aEntries[5] =
     {
-            { "AR/RR/NP 1", 0 },
-            { "AR/RR/NP 2", 0 },
+            { "Retro Replay", 0 },
+            { "Action Replay", 0 },
+            { "Super Snapshot", 0 },
+	    { "Final Cartridge", 0 },
             { "", 0 }
     };
     uint8_t rv;
 
-    rv = selectBox(aEntries, "an AR/RR/NP slot");
+    rv = selectBox(aEntries, "freezer slot");
     return rv;
 }
 
@@ -206,23 +200,20 @@ uint8_t selectARSlotDialog(void)
  */
 uint8_t selectSlotTypeDialog(void)
 {
-   const SelectBoxEntry aEntries[3] =
+   const SelectBoxEntry aEntries[4] =
     {
             { "EasyFlash", 0 },   // EF_SLOTS
             { "KERNAL", 0 },      // KERNAL_SLOTS
-//            { "Freezer", 0 },     // FREEZER_SLOTS
+            { "Freezer", 0 },    // FREEZER_SLOTS
             { "", 0 }
 
     };
     uint8_t rv;
 
-    rv = selectBox(aEntries, "flash type");
+    rv = selectBox(aEntries, "slot type");
     return rv;
 
 }
-
-
-
 
 /******************************************************************************/
 /**
@@ -282,7 +273,8 @@ void __fastcall__ slotSelect(uint8_t slot)
  * Otherwise nKERNAL contains the KERNAL slot number.
  *
  **/
-void __fastcall__ slotSaveName(const char* name, uint8_t nKERNAL)
+ 
+void __fastcall__ slotSaveName(const char* name, uint8_t nKERNAL, uint8_t nFreezer)
 {
     EasyFlashAddr addr;
     uint8_t  nSlot;
@@ -293,6 +285,8 @@ void __fastcall__ slotSaveName(const char* name, uint8_t nKERNAL)
     slotsFillEFDir();
     if (nKERNAL != 0xff)
         strncpy(m_EFDir.kernals[nKERNAL], name, sizeof(m_EFDir.kernals[0]));
+    else if (nFreezer != 0xff)
+        strncpy(m_EFDir.freezers[nFreezer], name, sizeof(m_EFDir.freezers[0]));
     else
         strncpy(m_EFDir.slots[nSlot], name, sizeof(m_EFDir.slots[0]));
 
@@ -312,42 +306,24 @@ void __fastcall__ slotSaveName(const char* name, uint8_t nKERNAL)
     g_nSelectedSlot = nSlot;
 }
 
-/******************************************************************************/
-/**
- */
 void slotsEditDirectory(void)
 {
-    const SelectBoxEntry aEntries[3] =
-    {
-            { "KERNALs", 0 },
-            { "EasyFlash Slots", 0 },
-            { "", 0 }
-    };
-    uint8_t rv, nDir, nKERNAL;
+    uint8_t nType, nSlot, nKERNAL, nFreezer;
 
-
-    nDir = selectBox(aEntries, "what to edit");
-    if (nDir == 0xff)
+    nType = selectSlotTypeDialog();
+    if (nType == 0xff)
         return;
 
     for (;;)
     {
-        if (nDir == 0)
-        {
-            nKERNAL = selectKERNALSlotDialog();
-            if (nKERNAL == 0xff)
-                return;
-
-            memset(utilStr, 0, UTIL_STR_SIZE);
-            memcpy(utilStr, m_EFDir.kernals[nKERNAL], EF_DIR_ENTRY_SIZE);
-        }
-        else
+        if (nType == EF_SLOTS)
         {
             nKERNAL = 0xff;
-            rv = selectSlotDialog();
-            if (rv == 0xff)
+            nFreezer = 0xff;
+            nSlot = selectSlotDialog();
+            if (nSlot == 0xff)
                 return;
-            g_nSelectedSlot = rv;
+            g_nSelectedSlot = nSlot;
 
             if (g_nSelectedSlot == 0)
             {
@@ -360,6 +336,28 @@ void slotsEditDirectory(void)
                 memcpy(utilStr, m_EFDir.slots[g_nSelectedSlot], EF_DIR_ENTRY_SIZE);
             }
         }
-        slotSaveName(screenReadInput("Name", utilStr), nKERNAL);
+        else if (nType == KERNAL_SLOTS)
+        {
+            nFreezer = 0xff;
+            nKERNAL = selectKERNALSlotDialog();
+            if (nKERNAL == 0xff)
+                return;
+
+            memset(utilStr, 0, UTIL_STR_SIZE);
+            memcpy(utilStr, m_EFDir.kernals[nKERNAL], EF_DIR_ENTRY_SIZE);
+        }
+        else
+        {
+            nKERNAL = 0xff;
+            nFreezer = selectFreezerSlotDialog();
+            if (nFreezer == 0xff)
+                return;
+
+            memset(utilStr, 0, UTIL_STR_SIZE);
+            memcpy(utilStr, m_EFDir.freezers[nFreezer], EF_DIR_ENTRY_SIZE);
+        }
+
+        slotSaveName(screenReadInput("Name", utilStr), nKERNAL, nFreezer);
     }
 }
+

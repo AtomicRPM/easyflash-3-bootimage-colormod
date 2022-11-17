@@ -43,6 +43,8 @@ extern uint8_t background;
 #define N_MENU_PAGES 2
 
 static const char* m_pEFSignature = "EF-Directory V1:";
+static const char* m_pEFSignature2 = "EF-Directory V2:";
+
 
 static efmenu_entry_t kernal_menu[] =
 {
@@ -70,14 +72,32 @@ static efmenu_entry_t ef_menu[] =
 };
 
 /* key 0 => end, key 0xff => not selectable */
-static efmenu_entry_t special_menu[] =
+static efmenu_entry_t freezer_menu[] =
 {
-        { 'r',  0,  0x10, 1,  MODE_AR,           "R", "Retro Replay",    "" },
-        { 'y',  0,  0x18, 1,  MODE_AR,           "Y", "Action Replay V6",    "" },
-        { 's',  0,  0x20, 1,  MODE_SS5,          "S", "Super Snapshot 5", "" },
-        { 'p',  0,  9,    1,  MODE_EF_NO_RESET,  "P", "EasyProg",         "crt" },
-        { 0xff, 0,  0,    0,  MODE_EF,           "",  "",                 "" },
-        { ' ',  0,  0,    0,  MODE_NEXT_PAGE,    "",  "<SPACE> for more","" },
+        { 'r',  0, 0x10,  1,  MODE_AR,        "R", "Replay Slot 1",     "" },
+        { 'y',  0, 0x18,  1,  MODE_AR,        "Y", "Replay Slot 2",     "" },
+        { 's',  0, 0x20,  1,  MODE_SS5,       "S", "Super Snapshot 5",  "" },
+        { 'l',  0, 0x28,  1,  MODE_FC3,       "L", "Final Cartridge 3", "" },
+        { 0xff, 0, 0,     0,  MODE_EF,        "",  "",                  "" },
+        { ' ',  0, 0,     0,  MODE_NEXT_PAGE, "",  "<SPACE> for more",  "" },
+        { 0, 0, 0, 0, 0, "", "", "" }
+};
+
+static efmenu_entry_t version_menu[] =
+{
+        { 0,  0,  0,  0,  MODE_SHOW_VERSION,  "",  "",  "" },
+        { 0, 0, 0, 0, 0, "", "", "" }
+};
+
+/* key v => next page to maintain compatibility with old show version mode */
+static efmenu_entry_t page1_menu[] =
+{
+        { 'p',  0, 9, 1,  MODE_EF_NO_RESET, "P", "EasyProg",          "crt" },
+        { 'k',  0, 0, 1,  MODE_KILL,        "K", "Kill Cartridge",    "" },
+        { 'z',  0, 0, 1,  MODE_GO128,       "Z", "To C128 Mode",      "" },
+        { 'v',  0, 0, 0,  MODE_SHOW_VERSION,"V",  "Show Version",    "" },
+        { 0xff, 0, 0, 0,  MODE_EF,          "",  "",                  "" },
+        { ' ',  0, 0, 0,  MODE_NEXT_PAGE,   "",  "<SPACE> for back",  "" },
         { 0, 0, 0, 0, 0, "", "", "" }
 };
 
@@ -87,23 +107,19 @@ static efmenu_entry_t dummy_menu[] =
         { 0, 0, 0, 0, 0, "", "", "" }
 };
 
-static efmenu_entry_t page1_menu[] =
-{
-        { 'v', 0, 0, 0,  MODE_SHOW_VERSION, "V", "Show Versions",    "" },
-        { 'k', 0, 0, 1,  MODE_KILL,         "K", "Kill Cartridge",   "" },
-        { 'z', 0, 0, 1,  MODE_GO128,        "Z", "To C128 Mode",     "" },
-        { 0, 0, 0, 0, 0, "", "", "" }
-};
-
 static efmenu_t all_menus[] =
 {
-        { 0,   2,  2, 10, kernal_menu },
-        { 0,   2, 15,  8, special_menu },
-        { 0,  22, 13,  9, ef_menu },
-        { 1,   2, 15,  8, page1_menu },
-        { 2,   0,  0,  0, dummy_menu },
-        { 0,   0,  0,  0, NULL }
+        { 0,  2,  2, 10, kernal_menu },
+        { 0,  2, 15,  8, freezer_menu },
+        { 0, 22, 13,  9, ef_menu },
+        { 1,  2,  2, 10, version_menu },
+        { 1,  2, 15,  8, page1_menu },
+        { 2,  0,  0,  0, dummy_menu },
+        { 0,  0,  0,  0, NULL }
 };
+
+
+
 
 /* This is the currently selected menu index in all_menus */
 static uint8_t n_current_menu;
@@ -469,8 +485,18 @@ static void show_version(void)
     text_plot_puts(x, 0, y, "CPLD Core Version:");
     y += 3;
     text_plot_puts(x, 0, y, "Menu Version:");
-    y += 4;
+    y += 3;
     text_plot_puts(x, 0, y, "Press <Run/Stop>");
+    x += 20;
+    y += 7;
+    text_plot_puts(x, 0, y, "github.com/");
+    y += 1;
+    x += 7;
+
+    text_plot_puts(x, 0, y, "AtomicRPM");
+    // reset coords to print version data
+    x -= 30;
+    y -= 7;
 
     if (vcode != EF3_OLD_VERSION)
     {
@@ -478,15 +504,16 @@ static void show_version(void)
         str_version[1] = '.';
         str_version[2] = '0' + ((vcode >> 3) & 7);
         str_version[3] = '.';
-        str_version[4] = '0' + (vcode & 7);
+       str_version[4] = '0' + (vcode & 7);
     }
     else
-        strcpy(str_version, "0.x.x");
+    strcpy(str_version, "0.x.x");
     y = all_menus[0].y_pos + 2;
     x += 6;
     text_plot_puts(x, 0, y, str_version);
     y += 3;
-    text_plot_puts(x, 0, y, EFVERSION);
+    text_plot_puts(x, 0, y, "atomic");
+    
 }
 
 
@@ -511,7 +538,6 @@ static void version_display_loop(void)
     }
     while (1);
 }
-
 
 /******************************************************************************/
 /**
@@ -595,24 +621,26 @@ static void erase_text_areas(uint8_t colors)
     }
 }
 
-
-/******************************************************************************/
-/**
- * Read the directory from the cartridge to our menu structures.
- * Return immediately if the signature cannot be found.
- */
 static void fill_directory(void)
 {
     const efmenu_dir_t* p_dir = (efmenu_dir_t*)0x8000;
     int i;
     efmenu_entry_t* p_entry;
     char*           p_name;
+    uint8_t         isSignature2 = 0;
 
     set_slot(EF_DIR_SLOT);
     set_bank(EF_DIR_BANK);
 
-    if (memcmp(p_dir->signature, m_pEFSignature, sizeof(p_dir->signature)))
-        return;
+    if (memcmp(p_dir->signature, m_pEFSignature, sizeof(p_dir->signature)) != 0)
+    {
+        if (memcmp(p_dir->signature,
+                   m_pEFSignature2, sizeof(p_dir->signature)) != 0)
+        {
+            return;
+        }
+        isSignature2 = 1;
+    }
 
     // we show slot 1 to 7 only
     p_name  = p_dir->slots[1];
@@ -625,7 +653,7 @@ static void fill_directory(void)
         p_entry->name[sizeof(ef_menu[0].name) - 1] = '\0';
     }
 
-    // and KERNAL 1 to 8
+    // KERNAL 1 to 8
     p_name  = p_dir->kernals[0];
     p_entry = kernal_menu;
     for (i = 0; i < 8; ++i)
@@ -635,6 +663,21 @@ static void fill_directory(void)
         p_name += sizeof(p_dir->slots[0]);
         p_entry->name[sizeof(kernal_menu[0].name) - 1] = '\0';
     }
+
+    // Freezer 1 to 2
+    if (isSignature2)
+    {
+        p_name  = p_dir->freezers[0];
+        p_entry = freezer_menu;
+        for (i = 0; i < 4; ++i)
+        {
+            memcpy(p_entry->name, p_name, sizeof(p_dir->freezers[0]));
+            ++p_entry;
+            p_name += sizeof(p_dir->slots[0]);
+            p_entry->name[sizeof(freezer_menu[0].name) - 1] = '\0';
+        }
+    }
+
 }
 
 

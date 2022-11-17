@@ -2,7 +2,7 @@
 * = $0000
 
 ; 16 bytes signature
-!pet "EF-Directory V1:"
+!pet "EF-Directory V2:"
 
 ; 16 EasyFlash slots
 !pet "System Area"      ; slot 0
@@ -55,6 +55,18 @@
 !align 15, 0, 0
 !pet "KERNAL 8"         ; KERNAL 8
 !align 15, 0, 0
+
+; 4 freezer slots
+!pet "Retro Replay 3.8" ; Action Replay slot 1
+!align 15, 0, 0
+!pet "Action Replay 6"  ; Action Replay slot 2
+!align 15, 0, 0
+!pet "SS5 Slot"         ; Super Snapshot 5
+!align 15, 0, 0
+!pet "FC3 Slot"         ; Final Cartridge III
+!align 15, 0, 0
+
+
 
 ; $4711 = no checksum
 !word $4711
