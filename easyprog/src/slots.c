@@ -38,6 +38,7 @@
 
 #define MAX_KERNALS 8
 #define MAX_ARS     2
+#define MAX_FREEZER 4
 
 uint8_t g_nSelectedSlot;
 uint8_t g_nSlots;
@@ -171,25 +172,39 @@ uint8_t selectKERNALSlotDialog(void)
     return rv;
 }
 
-
 /******************************************************************************/
 /**
- * Let the user select a KERNAL slot. Return the slot number.
+ * Let the user select a Freezer slot. Return the slot number.
  * Return 0xff if the user canceled the selection.
  */
+
 uint8_t selectFreezerSlotDialog(void)
 {
-    const SelectBoxEntry aEntries[5] =
-    {
-            { "Retro Replay", 0 },
-            { "Action Replay", 0 },
-            { "Super Snapshot", 0 },
-	    { "Final Cartridge", 0 },
-            { "", 0 }
-    };
-    uint8_t rv;
+    SelectBoxEntry  entries[MAX_FREEZER + 1];
+    SelectBoxEntry* pEntry;
+    char*           pLabel;
+    uint8_t         nSlot, rv;
 
-    rv = selectBox(aEntries, "freezer slot");
+    slotsFillEFDir();
+    // termination for strings with strlen() == EF_DIR_ENTRY_SIZE
+    // and termination for list
+    memset(entries, 0, (MAX_FREEZER + 1) * sizeof(SelectBoxEntry));
+
+    pEntry = entries;
+    pLabel = m_EFDir.freezers[0];
+    for (nSlot = 1; nSlot <= MAX_FREEZER; ++nSlot)
+    {
+        // take care: target must be at least as large as source
+        memcpy(pEntry->label, pLabel, sizeof(m_EFDir.freezers[0]));
+        // empty slots get a '-' because the menu needs a string
+        if (pEntry->label[0] == 0)
+            pEntry->label[0] = '-';
+
+        ++pEntry;
+        pLabel += sizeof(m_EFDir.freezers[0]);
+    }
+
+    rv = selectBox(entries, "a Freezer slot");
     return rv;
 }
 
