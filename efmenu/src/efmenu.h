@@ -1,4 +1,4 @@
-/*
+/
  * efmenu.h
  *
  *  Created on: 17.07.2011
